@@ -15,15 +15,17 @@
                     </a>
                   </li>
                   <li class="quick-view">
-                    <a href="product.html">+ Quick View</a>
+                    <router-link to="/product">+ Quick View</router-link>
                   </li>
                 </ul>
               </div>
               <div class="pi-text">
                 <div class="catagory-name">Coat</div>
-                <a href="#">
-                  <h5>Mickey Baggy</h5>
-                </a>
+                <router-link to="/product">
+                  <a href="#">
+                    <h5>Mickey Baggy</h5>
+                  </a>
+                </router-link>
                 <div class="product-price">
                   $14.00
                   <span>$35.00</span>
