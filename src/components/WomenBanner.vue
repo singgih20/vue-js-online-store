@@ -20,13 +20,15 @@
                     </a>
                   </li>
                   <li class="quick-view">
-                    <router-link to="/product">+ Quick View</router-link>
+                    <router-link v-bind:to="'/product/' + item.id"
+                      >+ Quick View</router-link
+                    >
                   </li>
                 </ul>
               </div>
               <div class="pi-text">
                 <div class="catagory-name">{{ item.type }}</div>
-                <router-link to="/product">
+                <router-link v-bind:to="'/product/' + item.id">
                   <a href="#">
                     <h5>{{ item.name }}</h5>
                   </a>
