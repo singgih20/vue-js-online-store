@@ -14,7 +14,17 @@
               <div class="pi-pic">
                 <img :src="item.galleries[0].photo" alt />
                 <ul>
-                  <li class="w-icon active">
+                  <li
+                    @click="
+                      saveKeranjang(
+                        item.id,
+                        item.name,
+                        item.price,
+                        item.galleries[0].photo
+                      )
+                    "
+                    class="w-icon active"
+                  >
                     <a href="#">
                       <i class="icon_bag_alt"></i>
                     </a>
@@ -59,9 +69,31 @@ export default {
   data() {
     return {
       products: [],
+      keranjangUser: [],
     };
   },
+  methods: {
+    saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
+      const productStored = {
+        id: idProduct,
+        nameProduct: nameProduct,
+        priceProduct: priceProduct,
+        photoProduct: photoProduct,
+      };
+
+      this.keranjangUser.push(productStored);
+      const parsed = JSON.stringify(this.keranjangUser);
+      localStorage.setItem("keranjangUser", parsed);
+    },
+  },
   mounted() {
+    if (localStorage.getItem("keranjangUser")) {
+      try {
+        this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+      } catch (error) {
+        localStorage.removeItem("keranjangUser");
+      }
+    }
     axios
       .get("http://shayna-backend.belajarkoding.com/api/products")
       .then((res) => (this.products = res.data.data.data))

@@ -56,14 +56,27 @@
                     <h3>{{ productDetails.name }}</h3>
                   </div>
                   <div class="pd-desc">
-                    {{ productDetails.description }}
+                    <p v-html="productDetails.description"></p>
 
                     <h4>${{ productDetails.price }}</h4>
                   </div>
                   <div class="quantity">
-                    <router-link to="/cart" class="primary-btn pd-cart"
-                      >Add To Cart</router-link
-                    >
+                    <router-link to="/cart" class="primary-btn pd-cart">
+                      <a
+                        @click="
+                          saveKeranjang(
+                            productDetails.id,
+                            productDetails.name,
+                            productDetails.price,
+                            productDetails.galleries[0].photo
+                          )
+                        "
+                        href="#"
+                        class="primary-btn pd-cart"
+                      >
+                        Add To Cart
+                      </a>
+                    </router-link>
                   </div>
                 </div>
               </div>
@@ -97,13 +110,8 @@ export default {
   data() {
     return {
       gambar_default: "",
-      thumbs: [
-        "img/mickey1.jpg",
-        "img/mickey2.jpg",
-        "img/mickey3.jpg",
-        "img/mickey4.jpg",
-      ],
       productDetails: [],
+      keranjangUser: [],
     };
   },
   methods: {
@@ -114,8 +122,27 @@ export default {
       this.productDetails = data;
       this.gambar_default = data.galleries[0].photo;
     },
+    saveKeranjang(idProduct, nameProduct, priceProduct, photoProduct) {
+      const productStored = {
+        id: idProduct,
+        nameProduct: nameProduct,
+        priceProduct: priceProduct,
+        photoProduct: photoProduct,
+      };
+
+      this.keranjangUser.push(productStored);
+      const parsed = JSON.stringify(this.keranjangUser);
+      localStorage.setItem("keranjangUser", parsed);
+    },
   },
   mounted() {
+    if (localStorage.getItem("keranjangUser")) {
+      try {
+        this.keranjangUser = JSON.parse(localStorage.getItem("keranjangUser"));
+      } catch (error) {
+        localStorage.removeItem("keranjangUser");
+      }
+    }
     axios
       .get("http://shayna-backend.belajarkoding.com/api/products", {
         params: {
